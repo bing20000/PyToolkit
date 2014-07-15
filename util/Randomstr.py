@@ -24,7 +24,7 @@ def str_generator(size=6,
 
     Usage::
 
-      >>> from randomstr import str_generator
+      >>> from Randomstr import str_generator
       >>> size = 10
       >>> length = 20
       >>> for i in range(size):
