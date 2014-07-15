@@ -1,5 +1,11 @@
 """
-This script is used to Record Module Dependencies, accomplished by installing a custom import hook that is called as part of the regular module import machinery..
+
+Created   : 2014.7.15
+Modified  : 2014.7.15
+
+This script is used to Record Module Dependencies,
+accomplished by installing a custom import hook that
+is called as part of the regular module import machinery..
 
 Origin from:
 http://www.indelible.org/ink/python-reloading/
@@ -12,6 +18,7 @@ import __builtin__ as builtins
 _baseimport = builtins.__import__
 _dependencies = dict()
 _parent = None
+
 
 def _import(name, globals=None, locals=None, fromlist=None, level=-1):
     # Track our current parent module.  This is used to find our current
