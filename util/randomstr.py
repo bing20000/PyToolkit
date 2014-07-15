@@ -7,7 +7,7 @@ random string generator
 
 A util function to generate random string for given length & charset.
 
-:Time_Created: 2014.7
+:Time_Created: 2014.7.15
 
 """
 
