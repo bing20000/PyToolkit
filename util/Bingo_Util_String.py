@@ -41,6 +41,16 @@ class TestRandomString(unittest.TestCase):
 
 """
 A util funciton for url join, add base url & path, also normalize the url.
+
+This function will
+1> extract the domain(scheme+host) from the 1st param,
+2> join it with the 2nd param
+3> normalize the url  before return.
+
+example:
+>>> urlnormjoin("http://www.baidu.com/123", "/../../abc.html"
+"http://www.baidu.com/abc.html"
+
 :Time_Created: 2014.7.16
 
 """
@@ -52,8 +62,10 @@ from urlparse import urlunparse
 from posixpath import normpath
 
 
-def urljoin(base, url):
-    url1 = urljoin(base, url)
+def urlnormjoin(base, path):
+    arr0 = urlparse(base)
+    domain = '{uri.scheme}://{uri.netloc}/'.format(uri=arr0)
+    url1 = urljoin(domain, path)
     arr = urlparse(url1)
     path = normpath(arr[2])
     return urlunparse((arr.scheme,
@@ -63,15 +75,19 @@ def urljoin(base, url):
 class TestUrlJoin(unittest.TestCase):
     def test_jion(self):
         self.assertEqual("http://www.baidu.com/abc.html",
-                         urljoin("http://www.baidu.com", "abc.html"))
+                         urlnormjoin("http://www.baidu.com", "abc.html"))
         self.assertEqual("http://www.baidu.com/abc.html",
-                         urljoin("http://www.baidu.com", "/../../abc.html"))
+                         urlnormjoin("http://www.baidu.com",
+                                     "/../../abc.html"))
         self.assertEqual("http://www.baidu.com/abc.html",
-                         urljoin("http://www.baidu.com/xxx",
-                                 "./../../abc.html"))
+                         urlnormjoin("http://www.baidu.com/xxx",
+                                     "./../../abc.html"))
+        self.assertEqual("http://www.baidu.com/abc.html?key=value&m=x",
+                         urlnormjoin("http://www.baidu.com",
+                                     "abc.html?key=value&m=x"))
         self.assertEqual("http://www.baidu.com/abc.html",
-                         urljoin("http://www.baidu.com",
-                                 "abc.html?key=value&m=x"))
+                         urlnormjoin("http://www.baidu.com/123",
+                                     "/../../abc.html"))
 
 
 if __name__ == "__main__":
