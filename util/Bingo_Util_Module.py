@@ -1,17 +1,3 @@
-"""
-
-Created   : 2014.7.15
-Modified  : 2014.7.15
-
-This script is used to Record Module Dependencies,
-accomplished by installing a custom import hook that
-is called as part of the regular module import machinery..
-
-Origin from:
-http://www.indelible.org/ink/python-reloading/
-
-
-"""
 
 import unittest
 import __builtin__ as builtins
@@ -22,6 +8,20 @@ _parent = None
 
 
 def _import(name, globals=None, locals=None, fromlist=None, level=-1):
+    """
+
+    Created   : 2014.7.15
+    Modified  : 2014.7.16
+
+    This script is used to Record Module Dependencies,
+    accomplished by installing a custom import hook that
+    is called as part of the regular module import machinery..
+
+    Origin from:
+    http://www.indelible.org/ink/python-reloading/
+
+
+    """
     # Track our current parent module.  This is used to find our current
     # place in the dependency graph.
 
@@ -46,6 +46,12 @@ def _import(name, globals=None, locals=None, fromlist=None, level=-1):
 
 
 class Test_import(unittest.TestCase):
+    """
+    :Time_Created: 2014.7.16
+
+    Unit test for urlnormjoin.
+    """
+
     def test_one(self):
         builtins.__import__ = _import
         import md5
