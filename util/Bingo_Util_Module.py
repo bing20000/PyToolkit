@@ -13,6 +13,7 @@ http://www.indelible.org/ink/python-reloading/
 
 """
 
+import unittest
 import __builtin__ as builtins
 
 _baseimport = builtins.__import__
@@ -23,6 +24,7 @@ _parent = None
 def _import(name, globals=None, locals=None, fromlist=None, level=-1):
     # Track our current parent module.  This is used to find our current
     # place in the dependency graph.
+
     global _parent
     parent = _parent
     _parent = name
@@ -42,8 +44,13 @@ def _import(name, globals=None, locals=None, fromlist=None, level=-1):
 
     return m
 
-builtins.__import__ = _import
+
+class Test_import(unittest.TestCase):
+    def test_one(self):
+        builtins.__import__ = _import
+        import md5
+        self.assertGreater(len(_dependencies.keys()), 0)
+        # print len(_dependencies.keys())
 
 if __name__ == "__main__":
-    import requests
-    print _dependencies
+    unittest.main()
