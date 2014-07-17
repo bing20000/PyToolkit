@@ -1,4 +1,3 @@
-
 import unittest
 import __builtin__ as builtins
 
@@ -7,9 +6,14 @@ _dependencies = dict()
 _parent = None
 
 
+"""
+This file contains some prototype function of module reload & denpendencies handle.
+Modulised solution can be found at https://github.com/jparise/python-reloader
+"""
+
+
 def _import(name, globals=None, locals=None, fromlist=None, level=-1):
     """
-
     Created   : 2014.7.15
     Modified  : 2014.7.16
 
@@ -44,18 +48,81 @@ def _import(name, globals=None, locals=None, fromlist=None, level=-1):
 
     return m
 
+builtins.__import__ = _import
+
 
 class Test_import(unittest.TestCase):
     """
     :Time_Created: 2014.7.16
 
-    Unit test for urlnormjoin.
+    Unit test for _import.
     """
 
     def test_one(self):
-        builtins.__import__ = _import
         import md5
         self.assertGreater(len(_dependencies.keys()), 0)
+        # print len(_dependencies.keys())
+
+import imp
+
+
+def _reload(m, visited):
+    """
+    Created   : 2014.7.15
+    Modified  : 2014.7.16
+
+    Internal module reloading routine.
+    """
+
+    name = m.__name__
+
+    # Start by adding this module to our set of visited modules.  We use
+    # this set to avoid running into infinite recursion while walking the
+    # module dependency graph.
+    visited.add(m)
+
+    # Start by reloading all of our dependencies in reverse order.  Note
+    # that we recursively call ourself to perform the nested reloads.
+    deps = _dependencies.get(name, None)
+    if deps is not None:
+        for dep in reversed(deps):
+            if dep not in visited:
+                _reload(dep, visited)
+
+    # Clear this module's list of dependencies.  Some import statements
+    # may have been removed.  We'll rebuild the dependency list as part
+    # of the reload operation below.
+    try:
+        del _dependencies[name]
+    except KeyError:
+        pass
+
+    # Because we're triggering a reload and not an import, the module
+    # itself won't run through our _import hook.  In order for this
+    # module's dependencies (which will pass through the _import hook) to
+    # be associated with this module, we need to set our parent pointer
+    # beforehand.
+    global _parent
+    _parent = name
+
+    # Perform the reload operation.
+    imp.reload(m)
+
+    # Reset our parent pointer.
+    _parent = None
+
+
+class Test_reload(unittest.TestCase):
+    """
+    :Time_Created: 2014.7.16
+
+    Unit test for _reload.
+    """
+
+    def test_one(self):
+        import md5
+        self.assertGreater(len(_dependencies.keys()), 0)
+        _reload(md5, set())
         # print len(_dependencies.keys())
 
 if __name__ == "__main__":

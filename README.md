@@ -1,5 +1,4 @@
-PyToolkit
+Land of Python
 =========
 
-My python tool kit 
-
+Have fun with python ~ :)

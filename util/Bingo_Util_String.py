@@ -30,7 +30,7 @@ class TestRandomString(unittest.TestCase):
     """
     :Time_Created: 2014.7.16
 
-    Unit test for urlnormjoin.
+    Unit test for randomstring.
     """
 
     def test_one(self):
