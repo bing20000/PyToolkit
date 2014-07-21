@@ -17,7 +17,7 @@ def randomstring(size=6,
 
     Usage::
 
-      >>> from Bingo_Util_String import randomstring
+      >>> from string import randomstring
       >>> print randomstring(20)
       aXyGpX1bXx9IqTwF9JjT
     """
@@ -62,7 +62,7 @@ def urlnormjoin(base, path):
 
     Usage::
 
-      >>> from Bingo_Util_String import randomstring
+      >>> from string import randomstring
       >>> urlnormjoin("http://www.baidu.com/123", "/../../abc.html"
       "http://www.baidu.com/abc.html"
     """

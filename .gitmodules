@@ -1,3 +1,0 @@
-[submodule "warehouse/python-reloader"]
-	path = warehouse/python-reloader
-	url = https://github.com/jparise/python-reloader.git
